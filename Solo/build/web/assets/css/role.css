@@ -1,0 +1,321 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --color-default: #2a8bec;
+    --color-second: #539ee9;
+    --color-white: #fff;
+    --color-body: #e4e9f7;
+    --color-light: #e0e0e0;
+    --color-gray: #999;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+#sidebar {
+    min-height: 100vh;
+    width: 72px;
+    padding: 6px 14px;
+    z-index: 99;
+    background-color: var(--color-default);
+    transition: all .5s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#sidebar.open{
+    width: 250px;
+}
+
+#sidebar .logo-details .icon {
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+#sidebar .logo-details {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#sidebar .logo-details .logo-name {
+    color: var(--color-white);
+    font-size: 22px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all .5s ease;
+}
+
+#sidebar.open .logo-details .icon,
+#sidebar.open .logo-details .logo-name {
+    opacity: 1;
+}
+
+#sidebar .logo-details .btn-menu {
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    transform: translateY(-50%);
+    font-size: 22px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+#sidebar i{
+    color: var(--color-white);
+    height: 60px;
+    line-height: 60px;
+    min-width: 50px;
+    font-size: 25px;
+    text-align: center;
+}
+
+#sidebar .nav-lists{
+    padding: 0;
+    margin-top: 20px;
+    height: 100%;
+}
+
+#sidebar li{
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+    border-bottom: 1px solid var(--color-light);
+    border-radius: 8px;
+}
+
+#sidebar li .tool-tip {
+    position: absolute;
+    top: -20px;
+    left: calc(100% + 15px);
+    z-index: 3;
+    background-color: var(--color-white);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 6px 14px;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#sidebar li:hover .tool-tip {
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s ease;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#sidebar.open li .tool-tip {
+    display: none;
+
+}
+
+#sidebar li a{
+    padding: 8px 0;
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    text-decoration: none;
+    background-color: var(--color-default);
+    transition: all .5s ease;
+    z-index: 12;
+}
+
+#sidebar li a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    background-color: var(--color-white);
+    border-radius: 6px;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: left;
+    z-index: -2;
+}
+
+#sidebar li a:hover::after {
+    transform: scaleX(1);
+    color: var(--color-default);
+}
+
+#sidebar li a .link-name {
+    color: var(--color-white);
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: all 0.4s ease;
+    opacity: 0;
+}
+
+#sidebar li a:hover .link-name,
+#sidebar li a:hover i {
+    transition: all 0.5s ease;
+    color: var(--color-default);
+}
+
+#sidebar.open li a .link-name {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#sidebar li i {
+    height: 35px;
+    line-height: 35px;
+    font-size: 18px;
+    border-radius: 6px;
+}
+
+#sidebar li.profile {
+    position: fixed;
+    height: 60px;
+    width: 72px;
+    left: 0;
+    bottom: -8px;
+    padding: 10px 14px;
+    overflow: hidden;
+    transition: all .5s ease;
+}
+
+#sidebar.open li.profile {
+    width: 250px;
+}
+
+#sidebar .profile .profile-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#sidebar li img{
+    height: 45px;
+    width: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#sidebar li.profile .name,
+#sidebar li.profile .designation {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--color-white);
+    white-space: nowrap;
+}
+
+#sidebar li.profile .designation {
+    font-size: 12px;
+}
+
+#sidebar .profile .btn-logout {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color:  var(--color-second);
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+section:not(#sidebar) {
+    position: relative;
+    background-color: var(--color-body);
+    min-height: 100vh;
+    top: 0;
+    left: 72px;
+    width: calc(100% - 72px);
+    /* transition: all .5s ease; */
+    z-index: 2;
+}
+
+#sidebar.open .profile .btn-logout {
+    width: 50px;
+    background: none;
+}
+
+section:not(#sidebar) .title {
+    display: inline-block;
+    color: var(--color-second);
+    text-transform: uppercase;
+    font-size: 48px;
+    font-weight: 500;
+    margin: 3rem;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+#sidebar.open ~ section:not(#sidebar) {
+    left: 250px;
+    width: calc(100% - 250px);
+}
+
+.overview .card {
+    border: none;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.overview .card .data {
+    margin-right: 1rem;
+}
+
+.card .data .data-number {
+    font-size: 3rem;
+}
+
+.card .data .data-des {
+    color: var(--color-gray);
+    font-weight: 300;
+}
+
+.overview .card .icon {
+    margin-left: 1rem;
+    font-size: 24px;
+    color: var(--color-second);
+}
+
+#dashboard .content .container {
+    position: relative;
+}
+
+.accounts {
+    position: absolute;
+    width: 100%;
+    top: 25vh;
+    max-height: 55vh;
+    overflow-y: scroll;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
+section .container.list{
+    background-color: var(--color-white);
+    padding-top: 1.25rem;
+    border-radius: 0.4rem;
+    max-height: 80vh;
+    overflow-y: scroll;
+}

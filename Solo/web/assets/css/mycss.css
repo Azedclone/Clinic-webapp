@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --primary-color: #2a8bec;
+}
+
+* {
+    font-family: 'Poppins';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+section {
+    margin: 120px 0;
+}
+
+.square {
+    position: relative;
+    width: 356px;
+    height: 456px;
+    background-color: #AED2F5;
+    z-index: 0;
+    border-top-right-radius: 30%;
+    border-bottom-left-radius: 30%;
+}
+
+.image-hero > img {
+    position: absolute;
+    top: 11%;
+}
+
+.general {
+    background-color: var(--primary-color);
+    padding: 3rem 8rem 4rem 8rem;
+    border-radius: 8px;
+}
+
+a.nav-link {
+    position: relative;
+    padding: 0.5rem 2rem;
+}
+
+a.nav-link::after {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    line-height: 1;
+    width: 100%;
+    background-color: #2a8bec;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s ease;
+}
+
+a.nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform .5s ease;
+}
+
+.about-img {
+    position: relative;
+}
+.about-img .about-img-shape {
+    width: 480px;
+    height: 340px;
+    clip-path: polygon(0 0, 80% 0%, 100% 100%, 0% 100%);    ;
+    background-color: #AED2F5;
+    border-radius: 10%;
+}
+
+.about-img img {
+    position: absolute;
+    top: -18%;
+    left: -9%;
+}
+
+.about-img .about-img-box {
+    position: absolute;
+    background-color: #ffffff;
+    top: 50%;
+    right: 0%;
+}
+
+.futu-img {
+    position: relative;
+}
+.futu-img .futu-img-shape {
+    width: 480px;
+    height: 340px;
+    clip-path: polygon(20% 0%, 100% 0, 100% 100%, 0% 100%);
+    background-color: #AED2F5;
+    border-radius: 10%;
+}
+
+.futu-img img {
+    position: absolute;
+    top: -17%;
+    left: -7%;
+}
+
+.futu-img .futu-img-box {
+    position: absolute;
+    background-color: #ffffff;
+    top: 50%;
+    left: 0%;
+}
+
+.card-footer img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.social-btn {
+    color: #6aaef3;
+}
