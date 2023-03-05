@@ -161,7 +161,7 @@ create table if not exists examinations (
 );
 
 -- create prescription table
-create table if not exists prescription (
+create table if not exists prescriptions (
 	prescriptionID serial primary key,
 	patientID bigint unsigned references accounts(accountID),
     medicineID bigint unsigned references medicines(medicineID),

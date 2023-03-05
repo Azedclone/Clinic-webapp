@@ -107,6 +107,8 @@
                             loadData("patients");
                             loadData("services");
                             loadData("examinations");
+                            loadData("prescriptions");
+                            loadData("medicines");
                             fillForm();
                             manageExamination();
                             managePrescription();

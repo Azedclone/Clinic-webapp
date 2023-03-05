@@ -1,5 +1,6 @@
 package controller;
 
+import dal.PrescriptionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,12 +13,39 @@ import java.util.HashMap;
 import model.Account;
 
 public class ManagePrescription extends HttpServlet {
-   
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {} 
 
-    /** 
+    PrescriptionDAO prescriptionDAO = new PrescriptionDAO();
+
+    private String createPrescription(HashMap<String, String> data) {
+        String status;
+        if (prescriptionDAO.createPrescription(
+                Integer.parseInt(data.get("patientID")),
+                Integer.parseInt(data.get("medicineID")),
+                data.get("instruction"),
+                Integer.parseInt(data.get("doctorID"))
+        )) {
+            status = "ok";
+        } else {
+            status = "error";
+        }
+
+        return status;
+    }
+
+    private String updatePrescription(int prescriptionID, String instruction) {
+        if (prescriptionDAO.editPrescription(prescriptionID, instruction)) {
+            return "ok";
+        }
+        return "error";
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -25,7 +53,7 @@ public class ManagePrescription extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/plain;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -43,13 +71,13 @@ public class ManagePrescription extends HttpServlet {
                     String parameterName = (String) enumeration.nextElement();
                     data.put(parameterName, request.getParameter(parameterName));
                 }
-//                out.println(createPrescription(data));
+                out.println(createPrescription(data));
             }
             break;
             case "edit": {
                 String prescriptionID = request.getParameter("prescriptionID");
                 String instruction = request.getParameter("instruction");
-//                out.println(updatePrescription(Integer.parseInt(prescriptionID), instruction));
+                out.println(updatePrescription(Integer.parseInt(prescriptionID), instruction));
             }
             break;
             default:
@@ -57,8 +85,9 @@ public class ManagePrescription extends HttpServlet {
         }
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

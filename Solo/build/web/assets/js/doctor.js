@@ -87,9 +87,11 @@ function loadData(type) {
         } else if (type == "patients") {
             $.post('../../loadData?type=' + type, function (data) {
                 $('#patients').empty();
+                $('#patientsP').empty();
 
                 $.each(data, function (i, val) {
                     $('#patients').append($('<option value="' + (val.accountID) + '">').text(val.name))
+                    $('#patientsP').append($('<option value="' + (val.accountID) + '">').text(val.name))
                 })
             })
         } else if (type == "services") {
@@ -156,7 +158,7 @@ function fillForm() {
 
         $.post($(this).attr('href'), function (data) {
             $('#editPrescription input#prescriptionID').attr('value', data.prescriptionID);
-            $('#editPrescription input#instruction').attr('value', data.instruction);
+            $('#editPrescription input#instructionLabel').attr('value', data.instruction);
         });
     });
 }

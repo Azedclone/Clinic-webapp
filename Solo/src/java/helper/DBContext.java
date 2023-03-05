@@ -16,7 +16,8 @@ public class DBContext {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("L?i k?t n?i MySQL");
+            e.printStackTrace();
+            System.out.println("Error MySQL");
         }
     }
     
