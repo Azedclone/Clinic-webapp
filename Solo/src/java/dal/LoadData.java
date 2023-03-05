@@ -33,10 +33,18 @@ public class LoadData extends HttpServlet {
         AccountDAO accountDAO = new AccountDAO();
         BlogDAO blogDAO = new BlogDAO();
         AppointmentDAO appointmentDAO = new AppointmentDAO();
+        ServiceDAO serviceDAO = new ServiceDAO();
+        MedicineDAO medicineDAO = new MedicineDAO();
+        ExaminationDAO examinationDAO = new ExaminationDAO();
+
         String type = request.getParameter("type");
         String username = request.getParameter("username");
         String blogID = request.getParameter("blogID");
         String appointmentID = request.getParameter("appointmentID");
+        String serviceID = request.getParameter("serviceID");
+        String medicineID = request.getParameter("medicineID");
+        String examinationID = request.getParameter("examinationID");
+        String prescriptionID = request.getParameter("prescriptionID");
 
         if (type != null) {
             switch (type) {
@@ -45,28 +53,29 @@ public class LoadData extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(accounts));
-                    break;
                 }
+                break;
                 case "doctors": {
                     List<Account> doctors = accountDAO.getAccountsByRole(1);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(doctors));
-                    break;
                 }
-                case "patients":
+                break;
+                case "patients": {
                     List<Account> patients = accountDAO.getAccountsByRole(2);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(patients));
-                    break;
+                }
+                break;
                 case "blogs": {
                     List<Blog> blogs = blogDAO.getBlogs();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(blogs));
-                    break;
                 }
+                break;
                 case "categories": {
                     List<Category> categories = blogDAO.getCategories();
                     response.setContentType("application/json");
@@ -88,8 +97,8 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(appointments));
                     }
-                    break;
                 }
+                break;
                 case "slots": {
                     String bookedDate_raw = request.getParameter("bookedDate");
                     String doctorID = request.getParameter("doctorID");
@@ -98,6 +107,52 @@ public class LoadData extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(slots));
+                }
+                break;
+                case "services": {
+                    List<Service> services = serviceDAO.getServices();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("utf-8");
+                    response.getWriter().write(new Gson().toJson(services));
+                }
+                break;
+                case "medicines": {
+                    List<Medicine> medicines = medicineDAO.getMedicines();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("utf-8");
+                    response.getWriter().write(new Gson().toJson(medicines));
+                }
+                break;
+                case "examinations": {
+                    HttpSession session = request.getSession();
+                    Account currentAccount = (Account) session.getAttribute("currentAccount");
+                    if (currentAccount.getRole() == 2) {
+                        List<Examination> examinations = examinationDAO.getExaminationsForPat(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(examinations));
+                    } else if (currentAccount.getRole() == 1) {
+                        List<Examination> examinations = examinationDAO.getExaminationsForDoc(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(examinations));
+                    }
+                }
+                break;
+                case "prescriptions": {
+                    HttpSession session = request.getSession();
+                    Account currentAccount = (Account) session.getAttribute("currentAccount");
+                    if (currentAccount.getRole() == 2) {
+                        List<Examination> examinations = examinationDAO.getExaminationsForPat(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(examinations));
+                    } else if (currentAccount.getRole() == 1) {
+                        List<Examination> examinations = examinationDAO.getExaminationsForDoc(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(examinations));
+                    }
                 }
                 break;
                 default:
@@ -120,13 +175,31 @@ public class LoadData extends HttpServlet {
             response.setCharacterEncoding("utf-8");
             response.getWriter().write(blogJson);
         } else if (appointmentID != null) {
-            Appointment appointment = appointmentDAO.getAppointment(Integer.parseInt(appointmentID));            
+            Appointment appointment = appointmentDAO.getAppointment(Integer.parseInt(appointmentID));
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setDateFormat("yyyy-MM-dd");
             String appointmentJson = gsonBuilder.create().toJson(appointment);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().write(appointmentJson);
+        } else if (serviceID != null) {
+            Service service = serviceDAO.getService(Integer.parseInt(serviceID));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(new Gson().toJson(service));
+        } else if (medicineID != null) {
+            Medicine medicine = medicineDAO.getMedicine(Integer.parseInt(medicineID));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(new Gson().toJson(medicine));
+        } else if (examinationID != null) {
+            Examination examination = examinationDAO.getExamination(Integer.parseInt(examinationID));
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.setDateFormat("yyyy-MM-dd");
+            String examinationJson = gsonBuilder.create().toJson(examination);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(examinationJson);
         }
     }
 

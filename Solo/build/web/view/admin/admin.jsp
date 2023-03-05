@@ -54,6 +54,20 @@
                     <span class="tool-tip">Manage Blogs</span>
                 </li>
                 <li>
+                    <a href="#service">
+                        <i class="fa-solid fa-hand-holding-medical"></i>
+                        <span class="link-name">Manage Services</span>
+                    </a>
+                    <span class="tool-tip">Manage Services</span>
+                </li>
+                <li>
+                    <a href="#medicine">
+                        <i class="fa-solid fa-capsules"></i>
+                        <span class="link-name">Manage Medicines</span>
+                    </a>
+                    <span class="tool-tip">Manage Medicines</span>
+                </li>
+                <li>
                     <a href="#profile">
                         <i class="fa-solid fa-gear"></i>
                         <span class="link-name">Profile</span>
@@ -82,8 +96,8 @@
                             </div>
                         </div>
                     </div>
-                    
-                        <i class="fa-solid fa-right-from-bracket btn-logout" onclick="logout(event)"></i>
+
+                    <i class="fa-solid fa-right-from-bracket btn-logout" onclick="logout(event)"></i>
                 </li>
             </ul>
 
@@ -103,8 +117,16 @@
         <!-- End Manage patient Section -->
 
         <!-- Start Manage blog Section -->
-        <%@include file="mange-blog.jsp" %>
+        <%@include file="manage-blog.jsp" %>
         <!-- End Manage blog Section -->
+
+        <!-- Start Manage service Section -->
+        <%@include file="manage-service.jsp" %>
+        <!-- End Manage service Section -->
+
+        <!-- Start Manage medicine Section -->
+        <%@include file="manage-medicine.jsp" %>
+        <!-- End Manage medicine Section -->
 
 
         <!-- Bootstrap JS -->
@@ -117,16 +139,20 @@
         <!-- Admin JS -->
         <script src="../../assets/js/admin.js"></script>
         <script>
-            $(document).ready(function(){
-                loadData("accounts");
-                loadData("doctors");
-                loadData("patients");
-                loadData("blogs");
-                loadData("categories");
-                manageDoctor();
-                managePatient();
-                manageBlog();
-            })
+                        $(document).ready(function () {
+                            loadData("accounts");
+                            loadData("doctors");
+                            loadData("patients");
+                            loadData("blogs");
+                            loadData("categories");
+                            loadData("services");
+                            loadData("medicines");
+                            manageDoctor();
+                            managePatient();
+                            manageBlog();
+                            manageService();
+                            manageMedicine();
+                        })
         </script>
     </body>
 </html>

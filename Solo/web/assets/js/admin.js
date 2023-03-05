@@ -144,6 +144,45 @@ function loadData(type) {
                     $('#categoryBlogLabel').append($('<option value="' + (i + 1) + '">').text(val.categoryName))
                 })
             })
+        } else if (type == "services") {
+            $.post('../../loadData?type=' + type, function (data) {
+                var aEdit = $('<a class="editService" data-bs-toggle="modal" data-bs-target="#form-editService" href=""><i class="fa-solid fa-pen text-dark me-3"></i></a>');
+
+                $('#services > tbody').empty();
+
+                $.each(data, function (i, val) {
+                    const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                            .append($('<td>').text(val.name))
+                            .append($('<td>').text(val.price))
+                            .append($('<td>').html((val.status == 1 ? 'Available<i class="fa-solid fa-circle-check text-success ms-2"></i>' : 'Disabled<i class="fa-solid fa-ban text-danger ms-2"></i>')))
+                            .append($('<td class="action">'));
+
+                    row.find('td.action')
+                            .append(aEdit.clone().attr({'href': '../../loadData?serviceID=' + val.serviceID}))
+
+                    $('#services > tbody').append(row);
+                })
+
+            })
+        } else if (type == "medicines") {
+            $.post('../../loadData?type=' + type, function (data) {
+                var aEdit = $('<a class="editMedicine" data-bs-toggle="modal" data-bs-target="#form-editMedicine" href=""><i class="fa-solid fa-pen text-dark me-3"></i></a>');
+
+                $('#medicines > tbody').empty();
+
+                $.each(data, function (i, val) {
+                    const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                            .append($('<td>').text(val.name))
+                            .append($('<td>').text(val.brand))
+                            .append($('<td class="action">'));
+
+                    row.find('td.action')
+                            .append(aEdit.clone().attr({'href': '../../loadData?medicineID=' + val.medicineID}))
+
+                    $('#medicines > tbody').append(row);
+                })
+
+            })
         }
     });
 }
@@ -183,6 +222,24 @@ function fillForm() {
             $('#editBlog img#thumbPreview').attr('src', '../../assets/img/blogs/' + data.thumbnails)
             $('#editBlog textarea#contentBlogLabel').val(data.content);
             $('#editBlog input[name="status"][value="' + data.status + '"]').prop('checked', true);
+        })
+    });
+
+    $(document).on('click', 'a.editService', function (e) {
+        $.post($(this).attr('href'), function (data) {
+            $('#editService input#serviceID').attr('value', data.serviceID);
+            $('#editService input#nameService').attr('value', data.name);
+            $('#editService input#priceService').attr('value', data.price);
+            $('#editService input[name="status"][value="' + data.status + '"]').prop('checked', true);
+        })
+    });
+
+    $(document).on('click', 'a.editMedicine', function (e) {
+        $.post($(this).attr('href'), function (data) {
+            $('#editMedicine input#medicineID').attr('value', data.medicineID);
+            $('#editMedicine input#nameMedicineLabel').attr('value', data.name);
+            $('#editMedicine input#brandMedicineLabel').attr('value', data.brand);
+            $('#editMedicine input#descriptionLabel').attr('value', data.description);
         })
     });
 }
@@ -256,7 +313,6 @@ function createDoctor() {
         });
     })
 }
-
 
 // Function Edit Doctor
 function editDoctor() {
@@ -336,7 +392,6 @@ function editDoctor() {
         })
     })
 }
-
 
 //Function Delete Doctor
 function deleteDoctor() {
@@ -422,10 +477,6 @@ $('#form-editBlog').on('hidden.bs.modal', function () {
 
 // Function create blog
 function createBlog() {
-    // $("#createBlog").on('shown', function () {
-    //     $('.modal-backdrop').show();
-    // });
-
     $('input#titleLabel').blur(function () {
         var value = $(this).val();
         if (/^(?=[a-zA-Z]+)[a-zA-Z0-9\s]{3,30}$/.test(value)) {
@@ -484,9 +535,6 @@ function createBlog() {
     })
 }
 
-// Preview image before upload
-
-
 // Function edit blog
 function editBlog() {
     /*
@@ -496,7 +544,7 @@ function editBlog() {
 
     $('#editBlog').submit(function (e) {
         e.preventDefault();
-        
+
         var formData = new FormData($('form#editBlog')[0]);
 
         Swal.fire({
@@ -573,6 +621,186 @@ function deleteBlog() {
     })
 }
 
+//Function create service
+function createService() {
+    $('#createService').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to create this service?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../manageService?type=create',
+                    type: 'POST',
+                    data: $('#createService').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Create Service',
+                            text: 'Create Service successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("services");
+                            $('#createService')[0].reset();
+                            $('#form-createService').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+//Function edit service
+function editService() {
+    $('#editService').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to update this service?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../manageService?type=edit',
+                    type: 'POST',
+                    data: $('#editService').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Update Service',
+                            text: 'Update Service successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("services");
+                            $('#editService')[0].reset();
+                            $('#form-editService').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+//Function create medicine
+function createMedicine() {
+    $('#createMedicine').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to create this medicine?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../manageMedicine?type=create',
+                    type: 'POST',
+                    data: $('#createMedicine').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Create Medicine',
+                            text: 'Create Medicine successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("medicines");
+                            $('#createMedicine')[0].reset();
+                            $('#form-createMedicine').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+//Function edit medicine
+function editMedicine() {
+    $('#editMedicine').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to update this medicine?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../manageMedicine?type=edit',
+                    type: 'POST',
+                    data: $('#editMedicine').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Update Medicine',
+                            text: 'Update Medicine successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("medicines");
+                            $('#editMedicine')[0].reset();
+                            $('#form-editMedicine').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
 $(".modal").on("shown.bs.modal", function () {
     if ($(".modal-backdrop").length > 1) {
         $(".modal-backdrop").not(':first').remove();
@@ -593,32 +821,32 @@ function managePatient() {
 
 function manageBlog() {
     //Preview img before upload
-    $('#thumbnailsLabel').change(function(){
+    $('#thumbnailsLabel').change(function () {
         const file = this.files[0];
-        
+
         if (file) {
             let reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 $('#thumbnailsPreview').attr('src', event.target.result);
-                $('#thumbnailsPreview').css({"width" : "88%", "height" : "50%"});
+                $('#thumbnailsPreview').css({"width": "88%", "height": "50%"});
                 $('#thumbnailsPreview').show();
             }
             reader.readAsDataURL(file);
-        }    
+        }
     });
 
-    $('#thumbBlogLabel').change(function(){
+    $('#thumbBlogLabel').change(function () {
         const file = this.files[0];
-        
+
         if (file) {
             let reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 $('#thumbPreview').attr('src', event.target.result);
-                $('#thumbPreview').css({"width" : "88%", "height" : "50%"});
+                $('#thumbPreview').css({"width": "88%", "height": "50%"});
                 $('#thumbPreview').show();
             }
             reader.readAsDataURL(file);
-        }    
+        }
     });
 
     createBlog();
@@ -627,4 +855,14 @@ function manageBlog() {
     deleteBlog();
 }
 
+function manageService() {
+    createService();
+    fillForm();
+    editService();
+}
 
+function manageMedicine() {
+    createMedicine();
+    fillForm();
+    editMedicine();
+}

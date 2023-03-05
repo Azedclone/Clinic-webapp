@@ -33,6 +33,20 @@
                     <span class="tool-tip">Manage Appointment</span>
                 </li>
                 <li>
+                    <a href="#examination">
+                        <i class="fa-solid fa-flask-vial"></i>
+                        <span class="link-name">Manage Examination</span>
+                    </a>
+                    <span class="tool-tip">Manage Examination</span>
+                </li>
+                <li>
+                    <a href="#prescription">
+                        <i class="fa-solid fa-prescription"></i>
+                        <span class="link-name">Manage Prescription</span>
+                    </a>
+                    <span class="tool-tip">Manage Prescription</span>
+                </li>
+                <li>
                     <a href="#profile">
                         <i class="fa-solid fa-gear"></i>
                         <span class="link-name">Profile</span>
@@ -69,6 +83,15 @@
         </section>
         <!-- End Sidebar -->
 
+        <!-- Start Examination section -->
+        <%@include file="manage-examination.jsp" %>
+        <!-- End Examination section -->
+
+        <!-- Start Prescription section -->
+        <%@include file="manage-prescription.jsp" %>
+        <!-- End Prescription section -->
+
+
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
@@ -81,7 +104,12 @@
         <script>
                         $(document).ready(function () {
                             loadData('appointments');
+                            loadData("patients");
+                            loadData("services");
+                            loadData("examinations");
                             fillForm();
+                            manageExamination();
+                            managePrescription();
                         })
         </script>
 

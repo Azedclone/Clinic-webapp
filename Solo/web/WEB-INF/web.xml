@@ -48,6 +48,22 @@
         <servlet-name>ManageAppointment</servlet-name>
         <servlet-class>controller.ManageAppointment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageService</servlet-name>
+        <servlet-class>controller.ManageService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageMedicine</servlet-name>
+        <servlet-class>controller.ManageMedicine</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageExamination</servlet-name>
+        <servlet-class>controller.ManageExamination</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagePrescription</servlet-name>
+        <servlet-class>controller.ManagePrescription</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -87,6 +103,22 @@
     <servlet-mapping>
         <servlet-name>ManageAppointment</servlet-name>
         <url-pattern>/manageAppointment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageService</servlet-name>
+        <url-pattern>/manageService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageMedicine</servlet-name>
+        <url-pattern>/manageMedicine</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageExamination</servlet-name>
+        <url-pattern>/manageExamination</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagePrescription</servlet-name>
+        <url-pattern>/managePrescription</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

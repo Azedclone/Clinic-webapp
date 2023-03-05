@@ -121,6 +121,36 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
+    
+    // Get single account
+    public Account getAccount(String username, String password) {
+        try {
+            sql = "select * from accounts where username = ? and password = ?";
+            st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, password);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                return new Account(
+                        rs.getInt("accountID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("avatar"),
+                        rs.getString("name"),
+                        rs.getString("phone"),
+                        rs.getInt("gender"),
+                        rs.getString("address"),
+                        rs.getDate("dob"),
+                        rs.getInt("role"),
+                        rs.getInt("status"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in AccountDAO.getAccount()");
+        }
+        return null;
+    }
 
     public void register(String username, String password, int role, int status) {
         try {

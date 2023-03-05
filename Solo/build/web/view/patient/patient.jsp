@@ -33,6 +33,13 @@
                     <span class="tool-tip">Manage Appointment</span>
                 </li>
                 <li>
+                    <a href="#examination">
+                        <i class="fa-solid fa-flask-vial"></i>
+                        <span class="link-name">Manage Examination</span>
+                    </a>
+                    <span class="tool-tip">Manage Examination</span>
+                </li>
+                <li>
                     <a href="#profile">
                         <i class="fa-solid fa-gear"></i>
                         <span class="link-name">Profile</span>
@@ -72,6 +79,10 @@
         <!-- Start Appointment section -->
         <%@include file="manage-appointment.jsp" %>
         <!-- End Appointment section -->
+        
+        <!-- Start Appointment section -->
+        <%@include file="manage-examination.jsp" %>
+        <!-- End Appointment section -->
 
 
         <!-- Bootstrap JS -->
@@ -86,7 +97,8 @@
         <script>
             $(document).ready(function(){
                 loadData('appointments');
-                loadData('doctors')
+                loadData('doctors');
+                loadData("examinations");
                 fillForm();
                 manageAppointment();
             })

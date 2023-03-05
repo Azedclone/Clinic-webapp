@@ -73,6 +73,32 @@ function loadData(type) {
                     $('#doctors').append($('<option value="' + (val.accountID) + '">').text(val.name))
                 })
             })
+        } else if (type == "examinations") {
+            var aView = $('<a class="viewExamination" data-bs-toggle="modal" data-bs-target="#form-viewExamination" href=""><i class="fa-solid fa-eye text-primary me-3"></i></a>');
+
+            $('#examinations > tbody').empty();
+
+            $.each(data, function (i, val) {
+                const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                        .append($('<td>').text(val.doctorName))
+                        .append($('<td>').text(val.serviceName))
+                        .append($('<td>').text(val.createdDate))
+                        .append($('<td>').html((val.status == 1 ? 'Paid<i class="fa-solid fa-circle-check text-success ms-2"></i>' : 'Not paid<i class="fa-solid fa-circle-pause text-danger ms-2"></i>')))
+                        .append($('<td class="action">'));
+
+                    row.find('td.action')
+                        .append(aView.clone().attr({'href': '../../loadData?examinationID=' + val.examinationID}));
+
+                $('#examinations > tbody').append(row);
+            });
+        } else if (type == "services") {
+            $.post('../../loadData?type=' + type, function (data) {
+                $('#services').empty();
+
+                $.each(data, function (i, val) {
+                    $('#services').append($('<option value="' + (val.serviceID) + '">').text(val.name))
+                })
+            })
         }
     });
 }
@@ -85,6 +111,15 @@ function fillForm() {
             $('#editAppointment input#appointmentIDLabel').attr({'value': data.appointmentID});
             $('#editAppointment input#symptonLabel').attr('value', data.sympton);
             $('#editAppointment input#messageLabel').attr({'value': (data.message != null ? data.message : '')});
+        });
+    });
+
+    $(document).on('click', 'a.viewExamination', function (e) {
+        e.preventDefault();
+
+        $.post($(this).attr('href'), function (data) {
+            $('#viewExamination input#examinationID').attr('value', data.examinationID);
+            $('#viewExamination input#result').attr('value', data.result);
         });
     });
 }

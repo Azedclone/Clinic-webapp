@@ -25,13 +25,14 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/plain;charset-UTF8");
 
         String username = request.getParameter("username");
+        String password = DigestUtils.md5Hex(request.getParameter("password")).toUpperCase();
         HttpSession session = request.getSession();
 
         AccountDAO accountDAO = new AccountDAO();
         if (!accountDAO.isExist(username)) {
             out.println("not exist");
         } else {
-            Account account = accountDAO.getAccount(username);
+            Account account = accountDAO.getAccount(username, password);
             if (account == null) {
                 out.println("wrong");
             } else {

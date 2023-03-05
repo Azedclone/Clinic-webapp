@@ -24,11 +24,11 @@
 </section>
 
 <!-- Start Form view appointment -->
-<div class="modal fade" id="form-viewAppointment" tabindex="-1" aria-labelledby="formEditLabel" aria-hidden="true">
+<div class="modal fade" id="form-viewAppointment" tabindex="-1" aria-labelledby="formViewLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-3 text-uppercase fw-bold" id="formEditLabel">Edit Appointment</h1>
+                <h1 class="modal-title fs-3 text-uppercase fw-bold" id="formViewLabel">View Appointment</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

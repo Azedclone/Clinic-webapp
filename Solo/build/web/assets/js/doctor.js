@@ -45,6 +45,7 @@ $('#sidebar li>a').click(function () {
     $('#sidebar').show({});
 });
 
+
 // Load data by type of it
 function loadData(type) {
     $.post('../../loadData?type=' + type, function (data) {
@@ -65,6 +66,65 @@ function loadData(type) {
 
                 $('#appointments > tbody').append(row);
             });
+        } else if (type == "examinations") {
+            var aEdit = $('<a class="editExamination" data-bs-toggle="modal" data-bs-target="#form-editExamination" href=""><i class="fa-solid fa-pen text-dark me-3"></i></a>');
+
+            $('#examinations > tbody').empty();
+
+            $.each(data, function (i, val) {
+                const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                        .append($('<td>').text(val.patientName))
+                        .append($('<td>').text(val.serviceName))
+                        .append($('<td>').text(val.createdDate))
+                        .append($('<td>').html((val.status == 1 ? 'Paid<i class="fa-solid fa-circle-check text-success ms-2"></i>' : 'Not paid<i class="fa-solid fa-circle-pause text-danger ms-2"></i>')))
+                        .append($('<td class="action">'));
+
+                    row.find('td.action')
+                        .append(aEdit.clone().attr({'href': '../../loadData?examinationID=' + val.examinationID}));
+
+                $('#examinations > tbody').append(row);
+            });
+        } else if (type == "patients") {
+            $.post('../../loadData?type=' + type, function (data) {
+                $('#patients').empty();
+
+                $.each(data, function (i, val) {
+                    $('#patients').append($('<option value="' + (val.accountID) + '">').text(val.name))
+                })
+            })
+        } else if (type == "services") {
+            $.post('../../loadData?type=' + type, function (data) {
+                $('#services').empty();
+
+                $.each(data, function (i, val) {
+                    $('#services').append($('<option value="' + (val.serviceID) + '">').text(val.name))
+                })
+            })
+        } else if (type == "prescriptions") {
+            var aEdit = $('<a class="editPrescription" data-bs-toggle="modal" data-bs-target="#form-editPrescription" href=""><i class="fa-solid fa-pen text-dark me-3"></i></a>');
+
+            $('#prescriptions > tbody').empty();
+
+            $.each(data, function (i, val) {
+                const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                        .append($('<td>').text(val.patientName))
+                        .append($('<td>').text(val.medicineName))
+                        .append($('<td>').text(val.createdDate))
+                        .append($('<td class="action">'));
+
+                    row.find('td.action')
+                        .append(aEdit.clone().attr({'href': '../../loadData?prescriptionID=' + val.prescriptionID}));
+
+                $('#prescriptions > tbody').append(row);
+            });
+        } else if (type == "medicines") {
+            $.post('../../loadData?type=' + type, function (data) {
+                $('#medicines').empty();
+
+                $.each(data, function (i, val) {
+                    $('#medicines').append($('<option value="' + (val.medicineID) + '">').text(val.name))
+                })
+            })
         }
     });
 }
@@ -78,6 +138,25 @@ function fillForm() {
             $('#viewAppointment input#slot').attr('value', 'Slot ' + data.slotID);
             $('#viewAppointment input#symptonLabel').attr('value', data.sympton);
             $('#viewAppointment textarea#messageLabel').val(data.message != null ? data.message : '');
+        });
+    });
+
+    $(document).on('click', 'a.editExamination', function (e) {
+        e.preventDefault();
+
+        $.post($(this).attr('href'), function (data) {
+            $('#editExamination input#examinationID').attr('value', data.examinationID);
+            $('#editExamination input#result').attr('value', data.result);
+            $('#editExamination input[name="status"][value="' + data.status + '"]').prop('checked', true);
+        });
+    });
+    
+    $(document).on('click', 'a.editPrescription', function (e) {
+        e.preventDefault();
+
+        $.post($(this).attr('href'), function (data) {
+            $('#editPrescription input#prescriptionID').attr('value', data.prescriptionID);
+            $('#editPrescription input#instruction').attr('value', data.instruction);
         });
     });
 }
@@ -94,6 +173,198 @@ $(".modal").on("shown.bs.modal", function () {
 
 
 function manageAppointment() {
-    viewAppointment();
     fillForm();
+}
+
+//Function create examination
+function createExamination() {
+    $('#createExamination').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to create this examination?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../manageExamination?type=create',
+                    type: 'POST',
+                    data: $('#createExamination').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Create examination',
+                            text: 'Create examination successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("examinations");
+                            $('#createExamination')[0].reset();
+                            $('#form-createExamination').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+//Function edit examination
+function editExamination() {
+    $('#editExamination').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to update this Examination?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../manageExamination?type=edit',
+                    type: 'POST',
+                    data: $('#editExamination').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Update Examination',
+                            text: 'Update Examination successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("examinations");
+                            $('#editExamination')[0].reset();
+                            $('#form-editExamination').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+
+function manageExamination() {
+    createExamination();
+    fillForm();
+    editExamination();
+}
+
+//Function create prescription
+function createPrescription() {
+    $('#createPrescription').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to create this prescription?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../managePrescription?type=create',
+                    type: 'POST',
+                    data: $('#createPrescription').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Create prescription',
+                            text: 'Create prescription successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("prescriptions");
+                            $('#createPrescription')[0].reset();
+                            $('#form-createPrescription').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+//Function edit examination
+function editPrescription() {
+    $('#editPrescription').submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Confirmation',
+            text: 'Are you sure to update this prescription?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../../managePrescription?type=edit',
+                    type: 'POST',
+                    data: $('#editPrescription').serialize()
+                }).done(function (data) {
+                    if (data.trim() == 'ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Update prescription',
+                            text: 'Update prescription successful',
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            loadData("prescriptions");
+                            $('#editPrescription')[0].reset();
+                            $('#form-editPrescription').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Name already existed',
+                            text: 'Please try another name!'
+                        })
+                    }
+                });
+            }
+        });
+    })
+}
+
+function managePrescription() {
+    createPrescription();
+    fillForm();
+    editPrescription();
 }
