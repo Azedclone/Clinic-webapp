@@ -99,6 +99,23 @@ function loadData(type) {
                     $('#services').append($('<option value="' + (val.serviceID) + '">').text(val.name))
                 })
             })
+        } else if (type == "prescriptions") {
+            var aView = $('<a class="viewPrescription" data-bs-toggle="modal" data-bs-target="#form-viewPrescription" href=""><i class="fa-solid fa-eye text-primary me-3"></i></a>');
+
+            $('#prescriptions > tbody').empty();
+
+            $.each(data, function (i, val) {
+                const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                        .append($('<td>').text(val.doctorName))
+                        .append($('<td>').text(val.medicineName))
+                        .append($('<td>').text(val.createdDate))
+                        .append($('<td class="action">'));
+
+                    row.find('td.action')
+                        .append(aView.clone().attr({'href': '../../loadData?prescriptionID=' + val.prescriptionID}));
+
+                $('#prescriptions > tbody').append(row);
+            });
         }
     });
 }
@@ -120,6 +137,15 @@ function fillForm() {
         $.post($(this).attr('href'), function (data) {
             $('#viewExamination input#examinationID').attr('value', data.examinationID);
             $('#viewExamination input#result').attr('value', data.result);
+        });
+    });
+
+    $(document).on('click', 'a.viewPrescription', function (e) {
+        e.preventDefault();
+
+        $.post($(this).attr('href'), function (data) {
+            $('#editPrescription input#prescriptionID').attr('value', data.prescriptionID);
+            $('#editPrescription input#instruction').attr('value', data.instruction);
         });
     });
 }

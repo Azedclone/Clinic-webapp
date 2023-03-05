@@ -40,6 +40,13 @@
                     <span class="tool-tip">Manage Examination</span>
                 </li>
                 <li>
+                    <a href="#prescription">
+                        <i class="fa-solid fa-prescription"></i>
+                        <span class="link-name">Manage Prescription</span>
+                    </a>
+                    <span class="tool-tip">Manage Prescription</span>
+                </li>
+                <li>
                     <a href="#profile">
                         <i class="fa-solid fa-gear"></i>
                         <span class="link-name">Profile</span>
@@ -84,6 +91,9 @@
         <%@include file="manage-examination.jsp" %>
         <!-- End Appointment section -->
 
+        <!-- Start Prescription section -->
+        <%@include file="manage-prescription.jsp" %>
+        <!-- End Prescription section -->
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
@@ -99,6 +109,7 @@
                 loadData('appointments');
                 loadData('doctors');
                 loadData("examinations");
+                loadData("prescription");
                 fillForm();
                 manageAppointment();
             })

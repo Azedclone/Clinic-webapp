@@ -54,36 +54,36 @@ public class LoadData extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(accounts));
+                    break;
                 }
-                break;
                 case "doctors": {
                     List<Account> doctors = accountDAO.getAccountsByRole(1);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(doctors));
+                    break;
                 }
-                break;
                 case "patients": {
                     List<Account> patients = accountDAO.getAccountsByRole(2);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(patients));
+                    break;
                 }
-                break;
                 case "blogs": {
                     List<Blog> blogs = blogDAO.getBlogs();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(blogs));
+                    break;
                 }
-                break;
                 case "categories": {
                     List<Category> categories = blogDAO.getCategories();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(categories));
+                    break;
                 }
-                break;
                 case "appointments": {
                     HttpSession session = request.getSession();
                     Account currentAccount = (Account) session.getAttribute("currentAccount");
@@ -98,8 +98,8 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(appointments));
                     }
+                    break;
                 }
-                break;
                 case "slots": {
                     String bookedDate_raw = request.getParameter("bookedDate");
                     String doctorID = request.getParameter("doctorID");
@@ -108,22 +108,22 @@ public class LoadData extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(slots));
+                    break;
                 }
-                break;
                 case "services": {
                     List<Service> services = serviceDAO.getServices();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(services));
+                    break;
                 }
-                break;
                 case "medicines": {
                     List<Medicine> medicines = medicineDAO.getMedicines();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(medicines));
+                    break;
                 }
-                break;
                 case "examinations": {
                     HttpSession session = request.getSession();
                     Account currentAccount = (Account) session.getAttribute("currentAccount");
@@ -138,8 +138,8 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(examinations));
                     }
+                    break;
                 }
-                break;
                 case "prescriptions": {
                     HttpSession session = request.getSession();
                     Account currentAccount = (Account) session.getAttribute("currentAccount");
@@ -154,8 +154,8 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(prescriptions));
                     }
+                    break;
                 }
-                break;
                 default:
                     break;
             }

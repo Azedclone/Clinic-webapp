@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 public class Prescription {
 
     private int prescriptionID;
@@ -10,19 +12,21 @@ public class Prescription {
     private String instruction;
     private int doctorID;
     private String doctorName;
+    private Date createdDate;
 
     public Prescription() {
     }
 
-    public Prescription(int prescriptionID, int patientID, int medicineID, String instruction, int doctorID) {
+    public Prescription(int prescriptionID, int patientID, int medicineID, String instruction, int doctorID, Date createdDate) {
         this.prescriptionID = prescriptionID;
         this.patientID = patientID;
         this.medicineID = medicineID;
         this.instruction = instruction;
         this.doctorID = doctorID;
+        this.createdDate = createdDate;
     }
 
-    public Prescription(int prescriptionID, int patientID, String patientName, int medicineID, String medicineName, String instruction, int doctorID, String doctorName) {
+    public Prescription(int prescriptionID, int patientID, String patientName, int medicineID, String medicineName, String instruction, int doctorID, String doctorName, Date createdDate) {
         this.prescriptionID = prescriptionID;
         this.patientID = patientID;
         this.patientName = patientName;
@@ -31,6 +35,15 @@ public class Prescription {
         this.instruction = instruction;
         this.doctorID = doctorID;
         this.doctorName = doctorName;
+        this.createdDate = createdDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public int getPrescriptionID() {

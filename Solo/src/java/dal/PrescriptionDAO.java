@@ -38,7 +38,8 @@ public class PrescriptionDAO extends DBContext {
                         rs.getString("medicineName"),
                         rs.getString("instruction"),
                         rs.getInt("doctorID"),
-                        rs.getString("doctorName")
+                        rs.getString("doctorName"),
+                        rs.getDate("createdDate")
                 ));
             }
         } catch (SQLException e) {
@@ -72,7 +73,8 @@ public class PrescriptionDAO extends DBContext {
                         rs.getString("medicineName"),
                         rs.getString("instruction"),
                         rs.getInt("doctorID"),
-                        rs.getString("doctorName")
+                        rs.getString("doctorName"),
+                        rs.getDate("createdDate")
                 ));
             }
         } catch (SQLException e) {
@@ -94,7 +96,7 @@ public class PrescriptionDAO extends DBContext {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-//            System.out.println("Error in PrescriptionDAO.createPrescription()");
+            System.out.println("Error in PrescriptionDAO.createPrescription()");
             return false;
         }
     }
@@ -127,7 +129,8 @@ public class PrescriptionDAO extends DBContext {
                         rs.getInt("patientID"),
                         rs.getInt("medicineID"),
                         rs.getString("instruction"),
-                        rs.getInt("doctorID")
+                        rs.getInt("doctorID"),
+                        rs.getDate("createdDate")
                 );
             }
         } catch (SQLException e) {

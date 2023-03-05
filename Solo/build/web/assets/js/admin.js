@@ -473,6 +473,12 @@ $('#form-createBlog').on('hidden.bs.modal', function () {
 $('#form-editBlog').on('hidden.bs.modal', function () {
     $('#editBlog')[0].reset();
 })
+$('#form-createService').on('hidden.bs.modal', function () {
+    $('#createService')[0].reset();
+})
+$('#form-editService').on('hidden.bs.modal', function () {
+    $('#editService')[0].reset();
+})
 
 
 // Function create blog
